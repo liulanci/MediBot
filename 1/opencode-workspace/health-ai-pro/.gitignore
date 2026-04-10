@@ -1,0 +1,92 @@
+# 依赖 | Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# 环境变量 | Environment Variables
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+
+# IDE | 开发工具
+.vscode/
+.idea/
+*.swp
+*.swo
+*~/
+.DS_Store
+Thumbs.db
+
+# 日志 | Logs
+logs/
+*.log
+access.log
+error.log
+
+# 操作系统
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp
+*.temp
+
+# 数据库 | Database
+*.sqlite
+*.db
+*.sql.bak
+
+# 私有文件 | Private Files
+private/
+secrets/
+credentials/
+*.pem
+*.key
+*.crt
+
+# 测试覆盖率 | Test Coverage
+coverage/
+.nyc_output/
+
+# 构建输出 | Build Output
+dist/
+build/
+out/
+
+# Vercel
+.vercel
+
+# Netlify
+.netlify
+
+# 临时文件 | Temporary Files
+tmp/
+temp/
+*.temp
+
+# 编译文件 | Compiled Files
+*.min.js
+*.min.css
+*.bundle.js
+
+# 备份文件 | Backup Files
+*.backup
+*.old
+*.copy
+
+# 敏感信息 | Sensitive Info
+credentials.json
+service-account.json
+*.secret
+
+# Git
+# (保持这些行以便管理，但不要提交敏感信息)
+
+# 排除目录 | Exclude Directories
+backup/
+downloads/
+uploads/
+cache/
