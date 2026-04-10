@@ -55,7 +55,7 @@ git commit -m "🎉 医智宝 v1.0.0 - 智能健康管理平台"
 ### 3. 推送代码 | Push Code
 ```bash
 # 添加远程仓库
-git remote add origin https://github.com/YOUR_USERNAME/medibot.git
+git remote add origin https://github.com/liulanci/MediBot.git
 
 # 推送
 git branch -M main
@@ -164,7 +164,7 @@ git push -u origin main
 # GitHub 推送
 git add .
 git commit -m "🎉 医智宝 v1.0.0"
-git remote add origin https://github.com/YOUR_USERNAME/medibot.git
+git remote add origin https://github.com/liulanci/MediBot.git
 git branch -M main
 git push -u origin main
 
@@ -180,7 +180,7 @@ docker run -p 3000:3000 medibot
 
 ## 📞 需要帮助？| Need Help?
 
-- **GitHub Issues**: https://github.com/yourusername/medibot/issues
+- **GitHub Issues**: https://github.com/liulanci/MediBot/issues
 - **文档**: 查看 README.md
 - **讨论**: GitHub Discussions
 

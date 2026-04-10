@@ -17,8 +17,8 @@ git add .
 # 4. 创建提交
 git commit -m "🎉 医智宝 v1.0.0"
 
-# 5. 关联 GitHub（替换为你的用户名）
-git remote add origin https://github.com/YOUR_USERNAME/medibot.git
+# 5. 关联 GitHub
+git remote add origin https://github.com/liulanci/MediBot.git
 
 # 6. 推送
 git branch -M main

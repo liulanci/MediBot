@@ -252,9 +252,9 @@ docker-compose up -d
 
 ## 📞 获取帮助 | Get Help
 
-- **GitHub Issues**: https://github.com/yourusername/medibot/issues
-- **文档**: https://github.com/yourusername/medibot#readme
-- **讨论**: https://github.com/yourusername/medibot/discussions
+- **GitHub Issues**: https://github.com/liulanci/MediBot/issues
+- **文档**: https://github.com/liulanci/MediBot#readme
+- **讨论**: https://github.com/liulanci/MediBot/discussions
 
 ---
 

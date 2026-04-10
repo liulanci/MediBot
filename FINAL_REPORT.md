@@ -175,8 +175,8 @@ git add .
 # 3. 创建初始提交
 git commit -m "🎉 医智宝 v1.0.0 - 智能健康管理平台"
 
-# 4. 关联远程仓库（替换为您的用户名）
-git remote add origin https://github.com/YOUR_USERNAME/medibot.git
+# 4. 关联远程仓库
+git remote add origin https://github.com/liulanci/MediBot.git
 
 # 5. 推送代码
 git branch -M main
@@ -246,8 +246,9 @@ git push -u origin main
 ## 📞 支持和联系
 
 ### 获取帮助
-- GitHub Issues: https://github.com/yourusername/medibot/issues
+- GitHub Issues: https://github.com/liulanci/MediBot/issues
 - 文档: README.md
+- 联系邮箱: liulanxime@outlook.com
 
 ### 报告问题
 - 使用 GitHub Issues

@@ -115,7 +115,7 @@ git remote -v
 # 确认 URL 正确
 
 # 如果需要，重新添加
-git remote set-url origin https://github.com/YOUR_USERNAME/MediBot.git
+git remote set-url origin https://github.com/liulanci/MediBot.git
 ```
 
 ### Q: 文件冲突？
@@ -153,7 +153,7 @@ git remote set-url origin https://YOUR_TOKEN@github.com/YOUR_USERNAME/MediBot.gi
 
 ## 📞 获取帮助
 
-- **GitHub Issues**: https://github.com/yourusername/MediBot/issues
+- **GitHub Issues**: https://github.com/liulanci/MediBot/issues
 - **文档**: README.md
 
 ---

@@ -6,8 +6,8 @@
 
 If you discover a security vulnerability, please contact us:
 
-- **GitHub Issues**: https://github.com/yourusername/medibot/issues
-- **Email**: security@medibot.example
+- **GitHub Issues**: https://github.com/liulanci/MediBot/issues
+- **邮箱**: liulanxime@outlook.com
 
 ### 报告内容 | What to Include
 
@@ -84,8 +84,8 @@ This project follows these security standards:
 如有问题，请联系：
 
 For questions, contact:
-- **GitHub**: https://github.com/yourusername/medibot
-- **Email**: security@medibot.example
+- **GitHub**: https://github.com/liulanci/MediBot
+- **邮箱**: liulanxime@outlook.com
 
 ---
 

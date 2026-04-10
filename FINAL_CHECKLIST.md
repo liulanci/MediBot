@@ -199,7 +199,7 @@
 
 ## 📞 支持
 
-- **GitHub Issues**: https://github.com/yourusername/MediBot/issues
+- **GitHub Issues**: https://github.com/liulanci/MediBot/issues
 - **文档**: README.md
 
 ---

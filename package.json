@@ -1,6 +1,6 @@
 {
   "name": "medibot",
-  "version": "1.0.0",
+  "version": "1.0.0.1",
   "description": "医智宝 - 智能健康管理平台 | MediBot - Intelligent Health Management Platform",
   "main": "src/server.js",
   "scripts": {
@@ -23,13 +23,13 @@
   ],
   "author": "MediBot Team",
   "license": "MIT",
-  "homepage": "https://github.com/yourusername/medibot#readme",
+  "homepage": "https://github.com/liulanci/MediBot#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/medibot.git"
+    "url": "https://github.com/liulanci/MediBot.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/medibot/issues"
+    "url": "https://github.com/liulanci/MediBot/issues"
   },
   "engines": {
     "node": ">=14.0.0"

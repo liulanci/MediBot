@@ -34,7 +34,7 @@ Found a bug? Let us know:
 1. **Fork 仓库** | Fork the repository
 2. **克隆到本地** | Clone locally
    ```bash
-   git clone https://github.com/yourusername/medibot.git
+   git clone https://github.com/liulanci/MediBot.git
    cd medibot
    ```
 3. **创建分支** | Create branch
@@ -252,8 +252,9 @@ Use Markdown, keep it simple:
 
 ## 📞 联系 | Contact
 
-- **GitHub Discussions**: https://github.com/yourusername/medibot/discussions
-- **Issue Tracker**: https://github.com/yourusername/medibot/issues
+- **GitHub Discussions**: https://github.com/liulanci/MediBot/discussions
+- **Issue Tracker**: https://github.com/liulanci/MediBot/issues
+- **邮箱**: liulanxime@outlook.com
 
 ---
 
