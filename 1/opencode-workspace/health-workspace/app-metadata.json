@@ -1,0 +1,70 @@
+{
+  "name": "Health Workspace",
+  "version": "4.0.0",
+  "description": "MBTI Personality Diagnosis & BMI Health Assessment System",
+  "author": "OpenCode Team",
+  "copyright": "Copyright © 2024 OpenCode Team. All rights reserved.",
+  "company": "OpenCode",
+  "product": "Health Workspace",
+  "fileVersion": "4.0.0.0",
+  "productVersion": "4.0.0.0",
+  "originalFilename": "HealthWorkspace.exe",
+  "internalName": "HealthWorkspace",
+  "legalCopyright": "Copyright © 2024 OpenCode Team. All rights reserved.",
+  "legalTrademarks": "Health Workspace is a trademark of OpenCode",
+  "comments": "Comprehensive health assessment tool combining MBTI personality analysis and BMI health evaluation",
+  "url": {
+    "homepage": "https://github.com/opencode-team/health-workspace",
+    "support": "https://github.com/opencode-team/health-workspace/issues",
+    "license": "https://github.com/opencode-team/health-workspace/blob/main/LICENSE"
+  },
+  "categories": [
+    "Health",
+    "Medical",
+    "Assessment",
+    "Personality",
+    "Wellness"
+  ],
+  "keywords": [
+    "MBTI",
+    "BMI",
+    "Health",
+    "Personality",
+    "Assessment",
+    "Diagnosis",
+    "Wellness"
+  ],
+  "requirements": {
+    "os": "Windows 10/11",
+    "processor": "x64 or x86",
+    "memory": "Minimum 512MB RAM",
+    "storage": "Minimum 100MB free space",
+    "runtime": "Node.js 18+ or PowerShell 5.1+"
+  },
+  "features": [
+    "MBTI Personality Diagnosis",
+    "BMI Health Assessment",
+    "Comprehensive Health Reports",
+    "Data Export (Markdown, JSON)",
+    "Secure Data Handling",
+    "Audit Logging",
+    "Rate Limiting",
+    "Input Validation"
+  ],
+  "security": {
+    "encryption": "AES-256-GCM",
+    "compliance": ["GDPR", "HIPAA", "OWASP Top 10"],
+    "auditLogging": true,
+    "rateLimiting": true,
+    "inputValidation": true
+  },
+  "installation": {
+    "type": "Self-extracting EXE",
+    "defaultPath": "%PROGRAMFILES%\\Health Workspace",
+    "shortcut": {
+      "desktop": true,
+      "startMenu": true
+    },
+    "uninstaller": true
+  }
+}

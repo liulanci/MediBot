@@ -1,0 +1,30 @@
+{
+  "name": "health-workspace",
+  "version": "4.0.0",
+  "description": "Health Workspace - MBTI Personality and BMI Health Assessment System",
+  "main": "src/app.js",
+  "bin": {
+    "health-workspace": "src/app.js"
+  },
+  "scripts": {
+    "start": "node src/app.js",
+    "install-app": "node installer.js",
+    "uninstall": "node uninstall.js",
+    "test": "node tests/test.js",
+    "test-all": "npm run test && npm run test-performance"
+  },
+  "keywords": [
+    "health",
+    "mbti",
+    "bmi",
+    "assessment",
+    "wellness"
+  ],
+  "author": "Health Workspace Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Workspace - 健康工作区</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .header p { opacity: 0.9; font-size: 1.1em; }
+        .tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+            border: none;
+            background: none;
+        }
+        .tab:hover { background: #e8e8e8; }
+        .tab.active {
+            background: white;
+            color: #4CAF50;
+            border-bottom: 3px solid #4CAF50;
+        }
+        .content { padding: 30px; }
+        .section { display: none; }
+        .section.active { display: block; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        .btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: block;
+            margin: 20px auto;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4);
+        }
+        .result {
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        .result.show { display: block; }
+        .result h3 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .result-item:last-child { border-bottom: none; }
+        .result-label { color: #666; }
+        .result-value { font-weight: 600; color: #333; }
+        .mbti-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .mbti-option {
+            padding: 15px;
+            text-align: center;
+            background: #f0f0f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .mbti-option:hover { background: #e0e0e0; }
+        .mbti-option.selected {
+            background: #4CAF50;
+            color: white;
+            border-color: #2E7D32;
+        }
+        .question {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+        .question-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            width: 0%;
+            transition: width 0.5s;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { opacity: 0.8; margin-top: 5px; }
+        .footer {
+            background: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Health Workspace</h1>
+            <p>MBTI 人格诊断 & BMI 健康评估系统</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('mbti')">MBTI 人格诊断</button>
+            <button class="tab" onclick="switchTab('bmi')">BMI 健康评估</button>
+            <button class="tab" onclick="switchTab('report')">综合报告</button>
+            <button class="tab" onclick="switchTab('about')">关于</button>
+        </div>
+        
+        <div class="content">
+            <div id="mbti" class="section active">
+                <h2>MBTI 人格测试</h2>
+                <p style="color: #666; margin-bottom: 20px;">请回答以下26道问题，每题选择 A 或 B</p>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="mbtiProgress"></div>
+                </div>
+                
+                <div id="questions"></div>
+                
+                <button class="btn" onclick="calculateMBTI()">提交诊断</button>
+                
+                <div class="result" id="mbtiResult">
+                    <h3>📊 诊断结果</h3>
+                    <div class="result-item">
+                        <span class="result-label">人格类型</span>
+                        <span class="result-value" id="mbtiType"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">类型名称</span>
+                        <span class="result-value" id="mbtiTypeName"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">所属族群</span>
+                        <span class="result-value" id="mbtiGroup"></span>
+                    </div>
+                    <div class="mbti-grid" id="mbtiDimensions"></div>
+                </div>
+            </div>
+            
+            <div id="bmi" class="section">
+                <h2>BMI 健康评估</h2>
+                <p style="color: #666; margin-bottom: 20px;">请输入您的身体数据进行健康评估</p>
+                
+                <div class="form-group">
+                    <label>身高 (cm)</label>
+                    <input type="number" id="height" placeholder="请输入身高，例如: 170">
+                </div>
+                
+                <div class="form-group">
+                    <label>体重 (kg)</label>
+                    <input type="number" id="weight" placeholder="请输入体重，例如: 65">
+                </div>
+                
+                <div class="form-group">
+                    <label>年龄</label>
+                    <input type="number" id="age" placeholder="请输入年龄，例如: 25">
+                </div>
+                
+                <div class="form-group">
+                    <label>性别</label>
+                    <select id="gender">
+                        <option value="">请选择性别</option>
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                    </select>
+                </div>
+                
+                <button class="btn" onclick="calculateBMI()">开始评估</button>
+                
+                <div class="result" id="bmiResult">
+                    <h3>📊 评估结果</h3>
+                    <div class="result-item">
+                        <span class="result-label">BMI 指数</span>
+                        <span class="result-value" id="bmiValue"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">健康分类</span>
+                        <span class="result-value" id="bmiCategory"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">健康评分</span>
+                        <span class="result-value" id="bmiScore"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">健康建议</span>
+                        <span class="result-value" id="bmiTips"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="report" class="section">
+                <h2>综合健康报告</h2>
+                <p style="color: #666; margin-bottom: 20px;">结合 MBTI 和 BMI 的综合分析报告</p>
+                
+                <div class="form-group">
+                    <label>姓名 (可选)</label>
+                    <input type="text" id="reportName" placeholder="请输入您的姓名">
+                </div>
+                
+                <h3 style="margin: 20px 0 10px;">MBTI 测试数据</h3>
+                <div id="reportMbti">
+                    <p style="color: #999;">请先完成 MBTI 测试</p>
+                </div>
+                
+                <h3 style="margin: 20px 0 10px;">BMI 身体数据</h3>
+                <div id="reportBmi">
+                    <p style="color: #999;">请先完成 BMI 评估</p>
+                </div>
+                
+                <button class="btn" onclick="generateReport()">生成综合报告</button>
+                
+                <div class="result" id="reportResult">
+                    <h3>📋 综合报告</h3>
+                    <div id="reportContent"></div>
+                </div>
+            </div>
+            
+            <div id="about" class="section">
+                <h2>关于 Health Workspace</h2>
+                <div style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                    <h3 style="color: #4CAF50; margin-bottom: 15px;">🏥 系统介绍</h3>
+                    <p style="margin-bottom: 15px;">
+                        Health Workspace 是一款整合了 MBTI 人格诊断系统和 BMI 健康评估系统的综合健康工具。
+                    </p>
+                    
+                    <h3 style="color: #4CAF50; margin-bottom: 15px;">✨ 功能特点</h3>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>MBTI 26题人格测试</li>
+                        <li>16种人格类型分析</li>
+                        <li>BMI 身体质量指数计算</li>
+                        <li>个性化健康建议</li>
+                        <li>综合健康报告生成</li>
+                    </ul>
+                    
+                    <h3 style="color: #4CAF50; margin-bottom: 15px;">🛡️ 安全特性</h3>
+                    <ul style="margin-left: 20px; margin-bottom: 15px;">
+                        <li>输入验证与安全过滤</li>
+                        <li>AES-256-GCM 数据加密</li>
+                        <li>完整审计日志系统</li>
+                        <li>API 速率限制保护</li>
+                    </ul>
+                    
+                    <h3 style="color: #4CAF50; margin-bottom: 15px;">📋 版本信息</h3>
+                    <p>版本: 4.0.2</p>
+                    <p>更新日期: 2026-04-10</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2024 OpenCode Team | 安全 · 可靠 · 易用</p>
+        </div>
+    </div>
+    
+    <script>
+        const mbtiQuestions = [
+            { dimension: "E-I", a: "你通常更喜欢在团队中工作", b: "你通常更喜欢独自工作" },
+            { dimension: "E-I", a: "你善于社交，喜欢结识新朋友", b: "你更倾向于与熟悉的人交往" },
+            { dimension: "S-N", a: "你关注具体的、实际的事物", b: "你更关注可能性和想象" },
+            { dimension: "S-N", a: "你按部就班，注重细节", b: "你灵活变通，注重整体" },
+            { dimension: "T-F", a: "你做决策时更注重逻辑", b: "你做决策时更注重情感" },
+            { dimension: "T-F", a: "你客观理性，就事论事", b: "你体贴善良，考虑他人感受" },
+            { dimension: "J-P", a: "你喜欢有计划、有条理", b: "你更灵活，随机应变" },
+            { dimension: "J-P", a: "你倾向于按约定时间完成任务", b: "你更倾向于在最后一刻完成" },
+            { dimension: "E-I", a: "你在社交场合感到精力充沛", b: "你在独处时感到精力充沛" },
+            { dimension: "S-N", a: "你更喜欢具体明确的信息", b: "你更喜欢抽象概括的信息" },
+            { dimension: "T-F", a: "你认为公正比仁慈更重要", b: "你认为仁慈比公正更重要" },
+            { dimension: "J-P", a: "你喜欢提前规划好一切", b: "你更喜欢保持开放的态度" },
+            { dimension: "E-I", a: "你愿意在众人面前表达观点", b: "你更倾向于私下思考" },
+            { dimension: "S-N", a: "你重视经验和事实", b: "你重视创新和可能性" },
+            { dimension: "T-F", a: "你更容易被逻辑说服", b: "你更容易被情感打动" },
+            { dimension: "J-P", a: "你更喜欢确定性和结论", b: "你更喜欢保持选择权" },
+            { dimension: "E-I", a: "你容易结识很多朋友", b: "你与少数挚友保持深厚友谊" },
+            { dimension: "S-N", a: "你相信亲眼所见", b: "你相信直觉" },
+            { dimension: "T-F", a: "你更关注对错", b: "你更关注是否和谐" },
+            { dimension: "J-P", a: "你严格按照计划执行", b: "你根据情况灵活调整" },
+            { dimension: "E-I", a: "你乐于参与各种活动", b: "你更喜欢安静思考" },
+            { dimension: "S-N", a: "你务实稳重", b: "你富有想象力" },
+            { dimension: "T-F", a: "你善于分析", b: "你善于理解" },
+            { dimension: "J-P", a: "你井井有条", b: "你随遇而安" },
+            { dimension: "S-N", a: "你关注现实问题", b: "你关注未来可能" },
+            { dimension: "T-F", a: "你坚定果断", b: "你温和友善" }
+        ];
+
+        let mbtiAnswers = {};
+        let bmiData = null;
+        let mbtiResult = null;
+
+        function initQuestions() {
+            const container = document.getElementById('questions');
+            container.innerHTML = '';
+            
+            mbtiQuestions.forEach((q, idx) => {
+                const div = document.createElement('div');
+                div.className = 'question';
+                div.innerHTML = `
+                    <div class="question-title">${idx + 1}. ${q.dimension} - 选项</div>
+                    <div class="mbti-grid">
+                        <div class="mbti-option" data-q="${idx}" data-a="A" onclick="selectAnswer(${idx}, 'A')">A: ${q.a}</div>
+                        <div class="mbti-option" data-q="${idx}" data-a="B" onclick="selectAnswer(${idx}, 'B')">B: ${q.b}</div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function selectAnswer(qIdx, answer) {
+            mbtiAnswers[qIdx + 1] = answer;
+            
+            const options = document.querySelectorAll(`.question[data-q="${qIdx}"] .mbti-option`);
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+                if (opt.dataset.a === answer) {
+                    opt.classList.add('selected');
+                }
+            });
+            
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answered = Object.keys(mbtiAnswers).length;
+            const percent = (answered / 26) * 100;
+            document.getElementById('mbtiProgress').style.width = percent + '%';
+        }
+
+        function calculateMBTI() {
+            if (Object.keys(mbtiAnswers).length < 26) {
+                alert('请完成所有26道题目');
+                return;
+            }
+            
+            const counts = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+            
+            mbtiQuestions.forEach((q, idx) => {
+                const answer = mbtiAnswers[idx + 1];
+                const dim = q.dimension.split('-');
+                if (answer === 'A') {
+                    counts[dim[0]]++;
+                } else {
+                    counts[dim[1]]++;
+                }
+            });
+            
+            let type = '';
+            type += counts.E >= counts.I ? 'E' : 'I';
+            type += counts.S >= counts.N ? 'S' : 'N';
+            type += counts.T >= counts.F ? 'T' : 'F';
+            type += counts.J >= counts.P ? 'J' : 'P';
+            
+            const typeNames = {
+                'INTJ': '战略家', 'INTP': '学者', 'ENTJ': '指挥官', 'ENTP': '辩论家',
+                'INFJ': '提倡者', 'INFP': '调停者', 'ENFJ': '主人公', 'ENFP': '竞选者',
+                'ISTJ': '物流师', 'ISFJ': '守卫者', 'ESTJ': '总经理', 'ESFJ': '执政官',
+                'ISTP': '鉴赏家', 'ISFP': '探险家', 'ESTP': '企业家', 'ESFP': '表演者'
+            };
+            
+            const groups = {
+                'INTJ': '分析师', 'INTP': '分析师', 'ENTJ': '分析师', 'ENTP': '分析师',
+                'INFJ': '理想主义者', 'INFP': '理想主义者', 'ENFJ': '理想主义者', 'ENFP': '理想主义者',
+                'ISTJ': '守护者', 'ISFJ': '守护者', 'ESTJ': '守护者', 'ESFJ': '守护者',
+                'ISTP': '探险家', 'ISFP': '探险家', 'ESTP': '探险家', 'ESFP': '探险家'
+            };
+            
+            mbtiResult = {
+                type: type,
+                typeName: typeNames[type] || type,
+                group: groups[type] || '未知',
+                dimensions: counts
+            };
+            
+            document.getElementById('mbtiType').textContent = type;
+            document.getElementById('mbtiTypeName').textContent = mbtiResult.typeName;
+            document.getElementById('mbtiGroup').textContent = mbtiResult.group;
+            
+            const dimGrid = document.getElementById('mbtiDimensions');
+            dimGrid.innerHTML = `
+                <div class="mbti-option">E: ${counts.E}</div>
+                <div class="mbti-option">I: ${counts.I}</div>
+                <div class="mbti-option">S: ${counts.S}</div>
+                <div class="mbti-option">N: ${counts.N}</div>
+                <div class="mbti-option">T: ${counts.T}</div>
+                <div class="mbti-option">F: ${counts.F}</div>
+                <div class="mbti-option">J: ${counts.J}</div>
+                <div class="mbti-option">P: ${counts.P}</div>
+            `;
+            
+            document.getElementById('mbtiResult').classList.add('show');
+        }
+
+        function calculateBMI() {
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const age = parseInt(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            
+            if (!height || !weight || !age || !gender) {
+                alert('请填写所有字段');
+                return;
+            }
+            
+            const bmi = weight / Math.pow(height / 100, 2);
+            let category = '';
+            let score = 0;
+            let tips = '';
+            
+            if (bmi < 18.5) {
+                category = '偏瘦';
+                score = 70;
+                tips = '建议适当增加营养，保持规律作息';
+            } else if (bmi < 24) {
+                category = '正常';
+                score = 95;
+                tips = '保持良好的生活习惯和饮食规律';
+            } else if (bmi < 28) {
+                category = '偏胖';
+                score = 75;
+                tips = '建议适当运动，控制饮食';
+            } else {
+                category = '肥胖';
+                score = 60;
+                tips = '建议制定减肥计划，咨询专业医生';
+            }
+            
+            bmiData = { bmi: bmi.toFixed(1), category, score, tips, height, weight, age, gender };
+            
+            document.getElementById('bmiValue').textContent = bmi;
+            document.getElementById('bmiCategory').textContent = category;
+            document.getElementById('bmiScore').textContent = score + '分';
+            document.getElementById('bmiTips').textContent = tips;
+            
+            document.getElementById('bmiResult').classList.add('show');
+        }
+
+        function generateReport() {
+            if (!mbtiResult || !bmiData) {
+                alert('请先完成 MBTI 和 BMI 测试');
+                return;
+            }
+            
+            const content = document.getElementById('reportContent');
+            content.innerHTML = `
+                <div class="result-item">
+                    <span class="result-label">姓名</span>
+                    <span class="result-value">${document.getElementById('reportName').value || '未填写'}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">MBTI 类型</span>
+                    <span class="result-value">${mbtiResult.type} (${mbtiResult.typeName})</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">人格族群</span>
+                    <span class="result-value">${mbtiResult.group}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">BMI 指数</span>
+                    <span class="result-value">${bmiData.bmi}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">健康分类</span>
+                    <span class="result-value">${bmiData.category}</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">综合健康评分</span>
+                    <span class="result-value">${Math.round((bmiData.score + 80) / 2)}分</span>
+                </div>
+            `;
+            
+            document.getElementById('reportResult').classList.add('show');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            
+            document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        initQuestions();
+    </script>
+</body>
+</html>
