@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="医智宝 - 智能健康管理平台，提供专业健康评估、疾病诊断支持和个性化健康管理服务">
+    <meta name="keywords" content="健康,医疗,AI,诊断,健康管理,心理健康">
+    <meta name="author" content="MediBot Team">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>医智宝 · 智能健康管理平台</title>
+    <link rel="stylesheet" href="css/styles.min.css" media="screen">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <style>
+        body{opacity:0;transition:opacity 0.3s}body.loaded{opacity:1}
+    </style>
+</head>
+<body>
+    <button class="hamburger-menu" onclick="toggleMobileMenu()" title="菜单">
+        ☰
+    </button>
+    
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-content">
+            <div class="mobile-menu-header">
+                <div>菜单</div>
+                <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+            </div>
+            <nav class="mobile-menu-nav">
+                <a href="#" class="mobile-menu-item" onclick="navigateTo('dashboard'); toggleMobileMenu(); return false;">
+                    <span class="icon">🏠</span>
+                    <span>首页</span>
+                </a>
+                <a href="#" class="mobile-menu-item" onclick="navigateTo('assessment'); toggleMobileMenu(); return false;">
+                    <span class="icon">🩺</span>
+                    <span>健康评估</span>
+                </a>
+                <a href="#" class="mobile-menu-item" onclick="navigateTo('chat'); toggleMobileMenu(); return false;">
+                    <span class="icon">💬</span>
+                    <span>智能咨询</span>
+                </a>
+                <a href="#" class="mobile-menu-item" onclick="navigateTo('lab'); toggleMobileMenu(); return false;">
+                    <span class="icon">🧪</span>
+                    <span>检验解读</span>
+                </a>
+                <a href="#" class="mobile-menu-item" onclick="navigateTo('profile'); toggleMobileMenu(); return false;">
+                    <span class="icon">👤</span>
+                    <span>个人中心</span>
+                </a>
+                <a href="#" class="mobile-menu-item" onclick="navigateTo('settings'); toggleMobileMenu(); return false;">
+                    <span class="icon">⚙️</span>
+                    <span>系统设置</span>
+                </a>
+                <a href="#" class="mobile-menu-item" onclick="askAI(); toggleMobileMenu(); return false;">
+                    <span class="icon">🤖</span>
+                    <span>AI助手</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+    
+    <button class="ask-ai-btn draggable" onclick="askAI()" title="咨询AI助手（可拖动）">
+        🤖
+    </button>
+    
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>医智宝</h1>
+                <p>智能健康管理平台</p>
+            </div>
+            <nav class="nav-menu" id="nav-menu"></nav>
+        </aside>
+        
+        <main class="main-content" id="main-content">
+        </main>
+    </div>
+    
+    <footer class="footer">
+        <div class="footer-quick-actions">
+            <button class="quick-action-btn" onclick="navigateTo('profile')" title="个人中心">
+                <span>👤</span>
+            </button>
+            <button class="quick-action-btn" onclick="navigateTo('settings')" title="系统设置">
+                <span>⚙️</span>
+            </button>
+        </div>
+        <div class="footer-brand">© 2024 医智宝 · 智能健康管理平台</div>
+        <div class="footer-slogan">智慧医疗 · 贴心守护</div>
+    </footer>
+    
+    <script src="js/draggable.min.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('loaded')});
+        window.addEventListener('load',function(){document.body.classList.add('loaded')});
+        const NavigationManager = {
+            currentPage: 'dashboard',
+            pages: [
+                { id: 'dashboard', name: '首页', icon: '🏠', title: '欢迎使用医智宝' },
+                { id: 'assessment', name: '健康评估', icon: '🩺', title: '专业健康评估' },
+                { id: 'chat', name: '智能咨询', icon: '💬', title: 'AI智能助手' },
+                { id: 'lab', name: '检验解读', icon: '🧪', title: '医学检验分析' },
+                { id: 'profile', name: '个人中心', icon: '👤', title: '个人信息管理' },
+                { id: 'settings', name: '系统设置', icon: '⚙️', title: '个性化设置' }
+            ],
+            init() {
+                this.renderSidebarNav();
+                this.navigate('dashboard');
+            },
+            renderSidebarNav() {
+                const navMenu = document.getElementById('nav-menu');
+                navMenu.innerHTML = this.pages.map(page => `
+                    <div class="nav-item" data-page="${page.id}" onclick="navigateTo('${page.id}')">
+                        <span class="nav-icon">${page.icon}</span>
+                        <span class="nav-text">${page.name}</span>
+                    </div>
+                `).join('');
+            },
+            navigate(pageId) {
+                this.currentPage = pageId;
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.toggle('active', item.dataset.page === pageId);
+                });
+                this.renderPage(pageId);
+            },
+            renderPage(pageId) {
+                const main = document.getElementById('main-content');
+                const page = this.pages.find(p => p.id === pageId);
+                
+                const pageContent = {
+                    dashboard: this.renderDashboard(),
+                    assessment: this.renderAssessment(),
+                    chat: this.renderChat(),
+                    lab: this.renderLab(),
+                    profile: this.renderProfile(),
+                    settings: this.renderSettings()
+                };
+                
+                main.innerHTML = `
+                    <h1 style="margin-bottom: 24px; color: var(--primary-dark); font-size: 1.8em;">
+                        ${page.icon} ${page.title}
+                    </h1>
+                    ${pageContent[pageId] || '<p>页面加载中...</p>'}
+                `;
+            },
+            renderDashboard() {
+                return `
+                    <div class="card">
+                        <h2 style="color: var(--primary); margin-bottom: 16px;">欢迎使用医智宝</h2>
+                        <p style="color: var(--text-secondary); line-height: 1.8;">
+                            医智宝是您的智能健康管理助手，提供专业的健康评估、疾病诊断支持和个性化健康建议。
+                        </p>
+                    </div>
+                    <div class="scales-grid">
+                        <div class="scale-card" onclick="navigateTo('assessment')">
+                            <div>🩺 健康评估</div>
+                            <div class="scale-desc">30+专业医学量表</div>
+                            <span class="scale-badge">推荐</span>
+                        </div>
+                        <div class="scale-card" onclick="askAI()">
+                            <div>🤖 AI助手</div>
+                            <div class="scale-desc">智能健康咨询</div>
+                            <span class="scale-badge">热门</span>
+                        </div>
+                        <div class="scale-card" onclick="navigateTo('lab')">
+                            <div>🧪 检验解读</div>
+                            <div class="scale-desc">医学检验分析</div>
+                        </div>
+                    </div>
+                `;
+            },
+            renderAssessment() {
+                return `
+                    <div class="card">
+                        <h2 style="color: var(--primary);">健康评估量表</h2>
+                        <p style="color: var(--text-secondary); margin: 16px 0;">
+                            选择您需要的评估类型开始测试
+                        </p>
+                    </div>
+                    <div class="scales-grid">
+                        <div class="scale-card">
+                            <div>📊 心理健康评估</div>
+                            <div class="scale-desc">SCL-90、SAS、SDS等专业量表</div>
+                        </div>
+                        <div class="scale-card">
+                            <div>🧠 认知功能评估</div>
+                            <div class="scale-desc">MMSE、MoCA等认知筛查</div>
+                        </div>
+                        <div class="scale-card">
+                            <div>❤️ 心血管风险评估</div>
+                            <div class="scale-desc">Framingham、SCORE等评分</div>
+                        </div>
+                        <div class="scale-card">
+                            <div>🩸 糖尿病风险评估</div>
+                            <div class="scale-desc">FINDRISC、ARC等工具</div>
+                        </div>
+                    </div>
+                `;
+            },
+            renderChat() {
+                return `
+                    <div class="card">
+                        <h2 style="color: var(--primary);">💬 智能咨询</h2>
+                        <p style="color: var(--text-secondary); margin: 16px 0;">
+                            点击右下角AI按钮开始智能健康咨询
+                        </p>
+                        <div style="padding: 40px; text-align: center; color: var(--text-muted);">
+                            <div style="font-size: 3em; margin-bottom: 16px;">🤖</div>
+                            <p>AI助手7×24小时为您服务</p>
+                        </div>
+                    </div>
+                `;
+            },
+            renderLab() {
+                return `
+                    <div class="card">
+                        <h2 style="color: var(--primary);">🧪 检验结果解读</h2>
+                        <p style="color: var(--text-secondary); margin: 16px 0;">
+                            输入或上传您的检验报告，获取专业解读
+                        </p>
+                        <div class="form-group">
+                            <label class="form-label">检验项目</label>
+                            <input type="text" class="form-input" placeholder="例如：血糖、血脂、肝功能等">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">检验数值</label>
+                            <input type="text" class="form-input" placeholder="请输入检验数值">
+                        </div>
+                        <button class="btn btn-primary" onclick="alert('检验解读功能开发中...')">
+                            开始解读
+                        </button>
+                    </div>
+                `;
+            },
+            renderProfile() {
+                return `
+                    <div class="card">
+                        <h2 style="color: var(--primary);">👤 个人中心</h2>
+                        <div class="form-group">
+                            <label class="form-label">姓名</label>
+                            <input type="text" class="form-input" placeholder="请输入姓名">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">年龄</label>
+                            <input type="number" class="form-input" placeholder="请输入年龄">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">性别</label>
+                            <select class="form-select">
+                                <option value="">请选择</option>
+                                <option value="male">男</option>
+                                <option value="female">女</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary">
+                            保存信息
+                        </button>
+                    </div>
+                `;
+            },
+            renderSettings() {
+                return `
+                    <div class="card">
+                        <h2 style="color: var(--primary);">⚙️ 系统设置</h2>
+                        <div class="form-group">
+                            <label class="form-label">主题颜色</label>
+                            <select class="form-select" onchange="changeTheme(this.value)">
+                                <option value="#5B7DB1">专业蓝</option>
+                                <option value="#10B981">清新绿</option>
+                                <option value="#8B5CF6">优雅紫</option>
+                                <option value="#F59E0B">活力橙</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">界面布局</label>
+                            <select class="form-select">
+                                <option value="auto">自动适应</option>
+                                <option value="mobile">移动端布局</option>
+                                <option value="desktop">桌面端布局</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary">
+                            保存设置
+                        </button>
+                    </div>
+                `;
+            }
+        };
+        
+        function navigateTo(pageId) {
+            NavigationManager.navigate(pageId);
+            updateMobileMenuActive(pageId);
+        }
+        
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu) menu.classList.toggle('active');
+        }
+        
+        function updateMobileMenuActive(page) {
+            const items = document.querySelectorAll('.mobile-menu-item');
+            items.forEach(item => {
+                const onclick = item.getAttribute('onclick') || '';
+                item.classList.toggle('active', onclick.includes(`'${page}'`));
+            });
+        }
+        
+        function askAI() {
+            alert('🤖 AI助手功能即将上线！\n\n请访问我们的官网了解更多信息。');
+        }
+        
+        function changeTheme(color) {
+            document.documentElement.style.setProperty('--primary', color);
+            document.documentElement.style.setProperty('--primary-light', color + '99');
+            document.documentElement.style.setProperty('--primary-dark', color + 'CC');
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            NavigationManager.init();
+        });
+    </script>
+</body>
+</html>
