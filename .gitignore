@@ -55,6 +55,7 @@ coverage/
 dist/
 build/
 out/
+public/assets/
 
 # Vercel
 .vercel

@@ -2,13 +2,15 @@
   "name": "medibot",
   "version": "1.0.0.1",
   "description": "医智宝 - 智能健康管理平台 | MediBot - Intelligent Health Management Platform",
-  "main": "src/server.js",
+  "type": "module",
   "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node src/server.js",
     "start": "node src/server.js",
-    "dev": "node src/server.js",
     "test": "echo \"No tests specified\"",
-    "lint": "echo \"No linter configured\"",
-    "build": "echo \"Static site - no build needed\""
+    "lint": "echo \"No linter configured\""
   },
   "keywords": [
     "health",
@@ -35,8 +37,16 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.2.5",
+    "pinia": "^2.1.7",
+    "@vueuse/core": "^10.7.0",
     "express": "^4.18.2",
     "mysql2": "^3.6.0",
     "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "vite": "^5.0.0"
   }
 }
